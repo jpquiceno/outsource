@@ -1,0 +1,395 @@
+@mixin flex() {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+}
+
+@mixin flex__col() {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column wrap;
+    flex-flow: column wrap;
+}
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin solid-border($direction) {
+    border-#{$direction}: 1px solid #333;
+}
+
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+html {
+  font-family: sans-serif;
+  /* 1 */
+  -ms-text-size-adjust: 100%;
+  /* 2 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */ }
+
+/**
+ * Remove default margin.
+ */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+}
+
+// helpers
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.caps { text-transition: uppercase;}
+
+[class*="icon-"] {
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.nav {
+
+    [class*="icon-"] {
+        background-color: #333;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        height: 40px;
+        width: 40px;
+    }
+}
+
+// fonts
+h2 {
+    margin: 0;
+
+    + .label {
+        font-weight: bold;
+        margin-top: 20px;
+    }
+}
+h3 {
+    font-family: "Arial Narrow", Arial, sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+    margin: 0;
+}
+
+//
+.container {
+    font-size: 1.5rem;
+}
+
+.header {
+    @include flex;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    z-index: 8000;
+
+    .theme-name {
+        // width: ;
+    }
+
+    button {
+        font-size: 14px;
+        @include border-radius(3px);
+        padding: .25rem 1rem;
+    }
+}
+
+.main {
+    background: rgba(255,0,0,.3);
+}
+
+.menu {
+    background: #7d7e7d; /* Old browsers */
+background: -moz-linear-gradient(top, #595959 0%, #0e0e0e 35%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, #595959 0%,#0e0e0e 35%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, #595959 0%,#0e0e0e 35%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+    align-items: stretch;
+
+    .nav {
+        margin: 0;
+        padding: 0;
+
+        li {
+            @include flex();
+            list-style: none;
+            color: #fff;
+            border-bottom: 1px solid #333;
+            padding: 10px;
+            align-items: center;
+            width: 100%;
+
+            i[class*="icon-"] {
+                display: inline-block;
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+.picture {
+    display: inline-block;
+    background: center / contain no-repeat url("https://i.imgur.com/bn56OI3.png");
+    @include border-radius(50%);
+    border: 3px solid #ccc;
+    margin-right: 10px;
+    height: 35px;
+    width: 35px;
+    overflow: hidden;
+}
+
+.feature {
+    background-color: #fff;
+    @include border-radius(3px);
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+[class*="flex"] {
+    @include flex();
+
+    &[class*="__justi--start"] {
+        justify-content: flex-start;
+    }
+    &[class*="__justi--center"] {
+        justify-content: center;
+    }
+
+    &[class*="__justi--between"] {
+        justify-content: space-between;
+    }
+
+    &[class*="__align-items--center"] {
+        align-items: center;
+    }
+
+    &[class*="__align--stretch"] {
+        align-content: stretch;
+    }
+}
+
+/* Mobile navigation */
+
+// Binds to JS Toggle
+.nav-mobile {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    background: orange;
+    height: 46px;
+    width: 46px;
+}
+
+// Mobile devices (phones, upto 767.9999px)
+@media screen and (max-width: 767.9999px) {
+    .hide__mobile { display: none !important; }
+    .show__mobile--block { display: block !important; }
+
+    // Hamburger nav visible on mobile only
+    .nav-mobile {
+        display: block;
+    }
+
+    #nav-toggle {
+        position: absolute;
+        top: 11px;
+        left: 9px;
+        cursor: pointer;
+        padding: 9px 30px 11px 0;
+
+        span,
+        span:before,
+        span:after {
+            cursor: pointer;
+            border-radius: 1px;
+            height: 3px;
+            width: 30px;
+            background: #000;
+            position: absolute;
+            display: block;
+            content: '';
+            transition: all 300ms ease-in-out;
+        }
+
+        span:before {
+            top: -8px;
+        }
+        span:after {
+            bottom: -8px;
+        }
+
+        &.active span {
+            background-color: transparent;
+            &:before,
+            &:after {
+              top: 0;
+            }
+            &:before {
+              transform: rotate(45deg);
+            }
+            &:after {
+              transform: rotate(-45deg);
+            }
+        }
+    }
+
+    .header {
+        justify-content: center;
+        padding: 1rem;
+
+        h3 { font-size: 22px; }
+    }
+
+    .menu {
+        position: relative;
+        left: -50%;
+        width: 50%;
+    }
+
+    .content {
+        padding: 20px;
+        width: 100%;
+    }
+}
+
+// Medium devices (tablets, 768px and up)
+@media screen and (min-width: 768px) {
+    .hide--md { display: none !important; }
+    .show--md--block { display: block !important; }
+
+    .header {
+        // background-color: rgba(255, 255, 0, .5);
+        @include solid-border(bottom);
+        padding: 1rem 2rem;
+
+        .theme-name {
+            padding-right: 3rem;
+        }
+
+        .download {
+            margin-right: auto;
+            margin-left: 10px;
+        }
+    }
+
+    h3 {
+        font-size: 22px;
+    }
+
+    .main {
+        // padding-top: 55px;
+
+        .menu {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            padding-top: 55px;
+            width: 135px;
+            z-index: 5000;
+
+            .nav {
+
+                li {
+                    @include flex__col();
+                    justify-content: center;
+                    padding: 20px;
+
+                    [class*="icon-"] {
+                        margin-right: 0;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+        }
+        .content {
+            margin-left: 135px;
+            padding: 20px;
+        }
+    }
+}
+
+// Large devices (desktops, 992px and up)
+@media screen and (min-width: 992px) {
+    .header {
+        // background-color: rgba(255, 255, 0, .5);
+        @include solid-border(bottom);
+        padding: 0;
+
+        .theme-name {
+            @include solid-border(right);
+
+            width: 275px;
+            padding: 1rem 0.5rem;
+        }
+
+        .download {
+            margin-right: auto;
+            margin-left: 10px;
+        }
+        .name {
+            padding-right: 20px;
+        }
+    }
+
+    .main {
+        // padding-top: 40px;
+
+        .menu {
+            height: 100%;
+            width: 275px;
+            bottom: 0;
+            padding-top: 46px;
+            width: 275px;
+            z-index: 5000;
+
+            .nav {
+
+                li {
+                    @include flex();
+                    justify-content: flex-start;
+                    padding: 10px 20px;
+
+                    [class*="icon-"] {
+                        margin-right: 10px;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        .content {
+            margin-left: 275px;
+            padding: 20px;
+        }
+    }
+}
